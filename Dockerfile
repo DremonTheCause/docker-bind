@@ -1,5 +1,5 @@
 FROM sameersbn/ubuntu:16.04.20180124
-MAINTAINER sameer@damagehead.com
+MAINTAINER jonbattista@gmail.com
 
 ENV BIND_USER=bind \
     BIND_VERSION=1:9.10.3 \
@@ -12,9 +12,11 @@ RUN rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
  && apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y bind9=${BIND_VERSION}* bind9-host=${BIND_VERSION}* webmin=${WEBMIN_VERSION}* dnsutils \
  && rm -rf /var/lib/apt/lists/*
+COPY /data /ns.battista.home
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
+COPY /data /
 
 EXPOSE 53/udp 53/tcp 10000/tcp
 ENTRYPOINT ["/sbin/entrypoint.sh"]
